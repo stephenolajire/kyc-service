@@ -13,7 +13,7 @@ def load_image_from_bytes(image_bytes: bytes) -> str:
     return temp_file.name
 
 
-def compare_faces(id_image_bytes: bytes, selfie_bytes: bytes, tolerance: float = 0.68) -> dict:
+def compare_faces(id_image_bytes: bytes, selfie_bytes: bytes, tolerance: float = 0.40) -> dict:
     id_temp = load_image_from_bytes(id_image_bytes)
     selfie_temp = load_image_from_bytes(selfie_bytes)
 
@@ -21,9 +21,10 @@ def compare_faces(id_image_bytes: bytes, selfie_bytes: bytes, tolerance: float =
         result = DeepFace.verify(
             img1_path=id_temp,
             img2_path=selfie_temp,
-            model_name="VGG-Face",
+            model_name="Facenet",        # 89MB vs VGG-Face 574MB
             distance_metric="cosine",
             enforce_detection=True,
+            detector_backend="opencv",   # lightest detector — skip MTCNN (heavy)
         )
     finally:
         for path in [id_temp, selfie_temp]:

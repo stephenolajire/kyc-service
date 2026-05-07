@@ -35,6 +35,7 @@ lightdsa==0.0.3
 lightecc==0.0.6
 lightphe==0.0.24
 lz4==4.4.5
+Markdown==3.10.2
 markdown-it-py==4.1.0
 MarkupSafe==3.0.3
 mdurl==0.1.2
@@ -73,7 +74,11 @@ six==1.17.0
 soupsieve==2.8.3
 sqlparse==0.5.5
 sympy==1.14.0
+tensorboard==2.17.1
+tensorboard-data-server==0.7.2
 tensorflow==2.21.0
+tensorflow-cpu==2.17.0
+tensorflow-intel==2.17.0
 termcolor==3.3.0
 tf_keras==2.21.0
 tifffile==2026.5.2
