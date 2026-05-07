@@ -8,7 +8,7 @@ charset-normalizer==3.4.7
 click==8.3.3
 colorama==0.4.6
 deepface==0.0.99
-Django==5.2.14
+Django==6.0.2
 djangorestframework==3.16.1
 easyocr==1.7.2
 filelock==3.29.0
@@ -78,7 +78,7 @@ tensorboard==2.17.1
 tensorboard-data-server==0.7.2
 tensorflow==2.21.0
 tensorflow-cpu==2.17.0
-tensorflow-intel==2.17.0
+tensorflow-intel
 termcolor==3.3.0
 tf_keras==2.21.0
 tifffile==2026.5.2
