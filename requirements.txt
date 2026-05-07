@@ -8,7 +8,7 @@ charset-normalizer==3.4.7
 click==8.3.3
 colorama==0.4.6
 deepface==0.0.99
-Django==6.0.2
+Django==5.2.14
 djangorestframework==3.16.1
 easyocr==1.7.2
 filelock==3.29.0
