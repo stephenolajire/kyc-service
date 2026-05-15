@@ -120,6 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 KYC_SERVICE_SECRET = config("KYC_SERVICE_SECRET")
 
