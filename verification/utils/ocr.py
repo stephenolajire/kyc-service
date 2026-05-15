@@ -1,24 +1,32 @@
-import easyocr
-import numpy as np
-import cv2
+from django.conf import settings
+
+_reader = None
+
+
+def get_reader():
+    global _reader
+    if _reader is None:
+        import easyocr
+        _reader = easyocr.Reader(["en"], gpu=False, verbose=False)
+    return _reader
 
 
 def extract_text_from_id(image_bytes: bytes) -> dict:
-    # gpu=False — no GPU on Render, saves memory trying to init CUDA
-    # paragraph=False — faster, less memory
-    reader = easyocr.Reader(["en"], gpu=False)
+    import cv2
+    import numpy as np
 
     nparr = np.frombuffer(image_bytes, np.uint8)
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    if image is None:
+        raise ValueError("Could not decode ID image.")
 
-    # Resize large images before OCR — cuts memory usage significantly
-    max_dim = 1200
+    max_dim = settings.MAX_IMAGE_DIMENSION
     h, w = image.shape[:2]
     if max(h, w) > max_dim:
         scale = max_dim / max(h, w)
         image = cv2.resize(image, (int(w * scale), int(h * scale)))
 
-    results = reader.readtext(image, paragraph=False)
+    results = get_reader().readtext(image, paragraph=False)
     full_text = "\n".join([text for (_, text, _) in results])
 
     return {

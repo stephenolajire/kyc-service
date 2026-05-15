@@ -10,9 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from decouple import config
+
+# Keep CPU-bound ML libraries from starting too many threads on small hosts.
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
+os.environ.setdefault("MKL_NUM_THREADS", "1")
+os.environ.setdefault("NUMEXPR_NUM_THREADS", "1")
+os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +33,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=False, cast=bool)
+DEBUG = str(config("DEBUG", default="False")).lower() in {"1", "true", "yes", "on"}
 
 ALLOWED_HOSTS = ["*"]
 
@@ -33,6 +41,8 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
+    'verification',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -113,6 +123,9 @@ STATIC_URL = 'static/'
 
 KYC_SERVICE_SECRET = config("KYC_SERVICE_SECRET")
 
-FACE_MODEL = "Facenet"      # 89MB vs VGG-Face 574MB
+FACE_MODEL = config("FACE_MODEL", default="SFace")
 FACE_TOLERANCE = 0.40 
 NAME_MATCH_THRESHOLD = 75
+MAX_UPLOAD_BYTES = config("MAX_UPLOAD_BYTES", default=4 * 1024 * 1024, cast=int)
+MAX_IMAGE_DIMENSION = config("MAX_IMAGE_DIMENSION", default=1000, cast=int)
+ID_AUTHENTICITY_MIN_SCORE = config("ID_AUTHENTICITY_MIN_SCORE", default=55, cast=int)
